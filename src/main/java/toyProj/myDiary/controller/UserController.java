@@ -8,6 +8,8 @@ import toyProj.myDiary.dto.user.UserLoginRequest;
 import toyProj.myDiary.dto.user.UserLoginResponse;
 import toyProj.myDiary.service.UserService;
 
+import java.util.Map;
+
 /*
     [사용자 관련 API]
     POST /api/users/join    : 회원가입
@@ -61,9 +63,10 @@ public class UserController {
 
     //회원가입
     @PostMapping("/join")
-    public ResponseEntity<String> join(@RequestBody UserJoinRequest request) {
+    public ResponseEntity<Map<String, String>> join(@RequestBody UserJoinRequest request) {
         userService.join(request); //dto로 담아서 전달하고 dto로 받음
-        return ResponseEntity.ok("회원가입이 완료되었습니다.");
+        return ResponseEntity.ok(Map.of("message", "회원가입이 완료되었습니다."));
+        //return ResponseEntity.ok("회원가입이 완료되었습니다.");
     }
 
     //로그인: JWT 적용 후, 응답 바디에 acessToken 포함 예정

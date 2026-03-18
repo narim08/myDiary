@@ -10,6 +10,7 @@ import toyProj.myDiary.service.DiaryService;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 /*
     [일기 관련 API (RESTful API 설계)]
@@ -86,22 +87,24 @@ public class DiaryController {
 
     //일기 수정
     @PutMapping("/{id}")
-    public ResponseEntity<String> update(
+    public ResponseEntity<Map<String, String>> update(
             @PathVariable Long id,
             //@RequestParam Long userId,
             @AuthenticationPrincipal Long userId,
             @RequestBody DiaryUpdateRequest request) {
         diaryService.update(userId, id, request);
-        return ResponseEntity.ok("수정되었습니다.");
+        return ResponseEntity.ok(Map.of("message", "수정되었습니다."));
+        //return ResponseEntity.ok("수정되었습니다.");
     }
 
     //일기 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(
+    public ResponseEntity<Map<String, String>> delete(
             @PathVariable Long id,
             //@RequestParam Long userId
             @AuthenticationPrincipal Long userId) {
         diaryService.delete(userId, id);
-        return ResponseEntity.ok("삭제되었습니다.");
+        return ResponseEntity.ok(Map.of("message", "삭제되었습니다."));
+        //return ResponseEntity.ok("삭제되었습니다.");
     }
 }

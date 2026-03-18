@@ -1,0 +1,122 @@
+/* =============================================
+   공통 스타일 - 파스텔 톤 귀여운 다이어리 테마
+   ============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&display=swap');
+
+/* CSS 변수 - 색상 팔레트 */
+:root {
+    --sky:       #87CEEB;   /* 오늘 날짜 */
+    --sky-light: #E8F4FD;   /* 배경, 호버 */
+    --sky-mid:   #B8DFF7;   /* 보조 */
+    --green:     #90EE90;   /* 일기 있는 날짜 */
+    --green-light: #E8F8E8;
+    --pink:      #FFB6C1;   /* 버튼 강조 */
+    --pink-light: #FFF0F3;
+    --white:     #FFFFFF;
+    --gray-100:  #F8F9FA;
+    --gray-200:  #F0F0F0;
+    --gray-400:  #AAAAAA;
+    --gray-600:  #666666;
+    --text:      #444444;
+    --radius:    12px;
+    --shadow:    0 2px 12px rgba(0,0,0,0.08);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: linear-gradient(135deg, #EBF6FF 0%, #FFF0F8 100%);
+    min-height: 100vh;
+    color: var(--text);
+}
+
+/* ── 공통 카드 ── */
+.card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 32px;
+}
+
+/* ── 공통 버튼 ── */
+.btn {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-family: inherit;
+    font-size: 14px;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+}
+.btn:hover  { opacity: 0.85; }
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+    background: var(--sky);
+    color: var(--white);
+    font-weight: 500;
+}
+.btn-pink {
+    background: var(--pink);
+    color: var(--white);
+    font-weight: 500;
+}
+.btn-ghost {
+    background: var(--gray-200);
+    color: var(--gray-600);
+}
+
+/* ── 공통 입력 ── */
+.input {
+    width: 100%;
+    border: none;
+    border-bottom: 1.5px solid var(--gray-200);
+    padding: 10px 4px;
+    font-family: inherit;
+    font-size: 15px;
+    outline: none;
+    background: transparent;
+    transition: border-color 0.2s;
+}
+.input:focus { border-bottom-color: var(--sky); }
+
+/* ── 공통 헤더 ── */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 32px;
+    background: var(--white);
+    box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+.header .logo {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--sky);
+    letter-spacing: -0.5px;
+}
+
+/* ── 페이지 컨테이너 ── */
+.page {
+    max-width: 720px;
+    margin: 40px auto;
+    padding: 0 16px;
+}
+
+/* ── 에러 메시지 ── */
+.error-msg {
+    color: #e74c3c;
+    font-size: 13px;
+    margin-top: 8px;
+    display: none;
+}
+.error-msg.show { display: block; }
