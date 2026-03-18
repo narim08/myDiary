@@ -32,7 +32,7 @@ public class DiaryService {
     //해당 날짜 별 일기 전체 목록 조회
     public List<DiaryListResponse> getDiariesByDate(Long userId, LocalDate date) {
         return diaryRepository
-                .findByUserIdAndDiaryDateOrderByCreatedAtDesc(userId, date)
+                .findByUserIdAndDiaryDateOrderByCreatedAtDescIdDesc(userId, date)
                 .stream()
                 .map(DiaryListResponse::from) //엔티티 -> DTO 변환
                 .collect(Collectors.toList());

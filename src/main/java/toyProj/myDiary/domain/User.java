@@ -5,12 +5,15 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 @Entity //jpa 켜야 사용 가능
+@Table(name = "users")
+@EntityListeners(AuditingEntityListener.class)
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED) //기본 생성자 자동 생성, 다른 곳(서비스)에서 new 생성 불가
 public class User {

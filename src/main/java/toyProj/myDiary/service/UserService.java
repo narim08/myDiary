@@ -1,6 +1,7 @@
 package toyProj.myDiary.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toyProj.myDiary.domain.User;
@@ -8,6 +9,7 @@ import toyProj.myDiary.dto.user.UserJoinRequest;
 import toyProj.myDiary.dto.user.UserLoginRequest;
 import toyProj.myDiary.dto.user.UserLoginResponse;
 import toyProj.myDiary.repository.UserRepository;
+import toyProj.myDiary.security.JwtTokenProvider;
 
 @Service
 @RequiredArgsConstructor //final 필드 생성자 자동 생성 (DI)
@@ -15,6 +17,8 @@ import toyProj.myDiary.repository.UserRepository;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder; //SpringConfig에서 Bean 등록함
+    private final JwtTokenProvider jwtTokenProvider;
 
     /*
         [회원가입]
@@ -35,9 +39,13 @@ public class UserService {
         }
 
         //3. 비밀번호 암호화 (Spring Security 적용 시 passwordEncoder.encode() 사용)
+        //BCrypt로 비밀번호 암호화 후 저장 -> DB에는 "$2a$10$..." 형태의 해시값이 저장됨
+        String encodedPassword = passwordEncoder.encode(request.getPassword());
+
         User user = User.create(
                 request.getLoginId(),
-                request.getPassword(), //암호화 전 임시
+                //request.getPassword(), //암호화 전 임시
+                encodedPassword,
                 request.getNickname()
         );
 
@@ -56,12 +64,19 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("아이디 또는 비밀번호가 틀렸습니다."));
 
         //2. 비밀번호 검증
-        if (!user.getPassword().equals(request.getPassword())) {
+//        if (!user.getPassword().equals(request.getPassword())) {
+//            throw new IllegalArgumentException("아이디 또는 비밀번호가 틀렸습니다.");
+//        }
+        //matches(입력된 평문, DB의 해시값) -> 내부적으로 BCrypt 비교
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new IllegalArgumentException("아이디 또는 비밀번호가 틀렸습니다.");
         }
 
+        //검증 통과 -> JWT 토큰 발급
+        String token = jwtTokenProvider.createToken(user.getId());
+
         //3. 성공 시 응답 반환 (메인 화면에서 닉네임 사용해야 해서)
-        return new UserLoginResponse(user.getId(), user.getNickname());
+        return new UserLoginResponse(user.getId(), user.getNickname(), token);
     }
 
 }

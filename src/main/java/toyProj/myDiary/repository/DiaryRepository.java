@@ -22,6 +22,6 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
 
     //메인 화면에서 캘린더 날짜 클릭 시, 해당 날짜에 전체 글 조회할 때 사용
     //특정 사용자의 특정 날짜 일기 목록 (최신순 정렬)
-    List<Diary> findByUserIdAndDiaryDateOrderByCreatedAtDesc(Long userId, LocalDate diaryDate);
+    List<Diary> findByUserIdAndDiaryDateOrderByCreatedAtDescIdDesc(Long userId, LocalDate diaryDate);
 
 }

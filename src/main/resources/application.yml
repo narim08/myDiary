@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/mydiary
+    username: mydiary_user
+    password: 1234
+    driver-class-name: org.mariadb.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+
+jwt:
+  secret: "myDiarySecretKeyForJwtTokenGeneration1234567890!!" #256bit ?? ??
+  expiration: 86400000 #24?? (ms ??)
+

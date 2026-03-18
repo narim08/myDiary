@@ -9,5 +9,5 @@ import lombok.Getter;
 public class UserLoginResponse {
     private Long userId;
     private String nickname;
-    //private String accessToken; //JWT 토큰
+    private String accessToken; //JWT 토큰
 }

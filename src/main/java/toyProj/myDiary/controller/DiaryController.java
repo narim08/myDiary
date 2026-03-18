@@ -3,11 +3,13 @@ package toyProj.myDiary.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import toyProj.myDiary.dto.diary.*;
 import toyProj.myDiary.service.DiaryService;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /*
     [일기 관련 API (RESTful API 설계)]
@@ -32,6 +34,8 @@ import java.time.LocalDate;
 
     !) userId를 쿼리 파라미터로 받는 건 임시 구조
     -> JWT 적용 후, SecurityContext에서 자동으로 꺼내 쓸 예정
+    -> @AuthenticationPrincipal: JwtAuthenticationFilter에서 SecurityContext에 저장한
+        UsernamePasswordAuthenticationToken의 principal (= userId Long값) 을 꺼냄
  */
 
 @RestController
@@ -45,7 +49,8 @@ public class DiaryController {
     //캘린더 월별로 일기 등록한 날짜 조회
     @GetMapping("/calendar")
     public ResponseEntity<DiaryCalendarResponse> getCalendar(
-            @RequestParam Long userId,
+            //@RequestParam Long userId,
+            @AuthenticationPrincipal Long userId, //userId 자동 주입됨
             @RequestParam int year,
             @RequestParam int month) {
         return ResponseEntity.ok(diaryService.getCalendarDates(userId, year, month));
@@ -53,8 +58,9 @@ public class DiaryController {
 
     //해당 날짜 별 일기 전체 목록 조회
     @GetMapping
-    public ResponseEntity<DiaryListResponse> getDiariesByDate(
-            @RequestParam Long userId,
+    public ResponseEntity<List<DiaryListResponse>> getDiariesByDate(
+            //@RequestParam Long userId,
+            @AuthenticationPrincipal Long userId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         return ResponseEntity.ok(diaryService.getDiariesByDate(userId, date));
     }
@@ -63,14 +69,16 @@ public class DiaryController {
     @GetMapping("/{id}")
     public ResponseEntity<DiaryDetailResponse> getDiary(
             @PathVariable Long id,
-            @RequestParam Long userId) {
+            //@RequestParam Long userId
+            @AuthenticationPrincipal Long userId) {
         return ResponseEntity.ok(diaryService.getDiary(userId, id));
     }
 
     //일기 작성
     @PostMapping
     public ResponseEntity<Long> create(
-            @RequestParam Long userId,
+            //@RequestParam Long userId,
+            @AuthenticationPrincipal Long userId,
             @RequestBody DiaryCreateRequest request) {
         Long diaryId = diaryService.create(userId, request);
         return ResponseEntity.ok(diaryId);
@@ -80,7 +88,8 @@ public class DiaryController {
     @PutMapping("/{id}")
     public ResponseEntity<String> update(
             @PathVariable Long id,
-            @RequestParam Long userId,
+            //@RequestParam Long userId,
+            @AuthenticationPrincipal Long userId,
             @RequestBody DiaryUpdateRequest request) {
         diaryService.update(userId, id, request);
         return ResponseEntity.ok("수정되었습니다.");
@@ -90,7 +99,8 @@ public class DiaryController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(
             @PathVariable Long id,
-            @RequestParam Long userId) {
+            //@RequestParam Long userId
+            @AuthenticationPrincipal Long userId) {
         diaryService.delete(userId, id);
         return ResponseEntity.ok("삭제되었습니다.");
     }
