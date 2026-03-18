@@ -12,6 +12,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 /*
     [Spring Security 설정]
@@ -28,6 +33,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                //CORS 설정 추가: 브라우저에서 fetch로 백엔드 API 호출할 때 이 설정이 없으면 브라우저가 응답을 차단함
+                //FE, BE 같은 8080 포트여도 Spring Security가 preflight 요청 막음
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+
                 //CSRF 비활성화: REST API + JWT 방식에서는 불필요 (CSRF는 세션/쿠키 기반 인증의 취약점을 막는 용도)
                 .csrf(AbstractHttpConfigurer::disable)
 
@@ -37,10 +46,10 @@ public class SecurityConfig {
 
                 //URL별 접근 권한 설정
                 .authorizeHttpRequests(auth -> auth
-                        //회원가입, 로그인, 프론트엔드 정적 리소스는 누구나 접근 가능
+                        //회원가입, 로그인, 프론트엔드 정적 리소스는 접근 허용해야 함
                         .requestMatchers(HttpMethod.POST, "/api/users/join").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users/login").permitAll()
-                        .requestMatchers("/", "index.html", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/", "/*.html", "/css/**", "/js/**", "/favicon.ico").permitAll()
                         .anyRequest().authenticated() //그 외 모든 요청은 인증 필요
                 )
 
@@ -52,6 +61,34 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /*
+        CORS 설정
+        -개발 중: localhost 모든 포트 허용
+        -배포 시: allowedOrigins를 실제 도메인으로 교체
+    */
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+
+        //허용할 출처 (개발용)
+        config.setAllowedOriginPatterns(List.of("*"));
+
+        //허용할 HTTP 메서드
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+
+        //허용할 헤더
+        config.setExposedHeaders(List.of("*"));
+
+        //Authorization 헤더 노출 (클라이언트에서 읽을 수 있게)
+        config.setExposedHeaders(List.of("Authorization"));
+
+        //자격 증명 포함 허용 (쿠키 등, JWT는 필수는 아니지만 관례상 추가)
+        config.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config); //모든 경로에 적용
+        return source;
+    }
 
     /*
         비밀번호 암호화 Bean
@@ -62,5 +99,4 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }

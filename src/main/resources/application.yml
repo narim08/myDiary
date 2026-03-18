@@ -1,3 +1,6 @@
+server:
+  port: 8080
+
 spring:
   datasource:
     url: jdbc:mariadb://localhost:3306/mydiary
@@ -7,8 +10,18 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update  #개발 중엔 update, 운영에는 validate
     show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+    #LocalDate / LocalDateTime JSON 직렬화 설정
+    #이게 없으면 날짜가 배열([2026, 3, 17])로 내려와서 프론트에서 파싱 오류남
+    jackson:
+      serialization:
+        write-dates-as-timestamps: false
+      time-zone: Asia/Seoul
 
 jwt:
   secret: "myDiarySecretKeyForJwtTokenGeneration1234567890!!" #256bit ?? ??

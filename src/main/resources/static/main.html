@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Diary</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .header .logout-btn {
+            background: none;
+            border: 1.5px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 7px 16px;
+            font-size: 13px;
+            color: var(--gray-600);
+            cursor: pointer;
+            transition: border-color 0.15s, color 0.15s;
+        }
+        .header .logout-btn:hover {
+            border-color: var(--pink);
+            color: var(--pink);
+        }
+
+        /* ── 캘린더 ── */
+        .calendar-card {
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        /* 캘린더 헤더 (연/월 + 이전/다음) */
+        .cal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 28px 16px;
+            background: linear-gradient(135deg, var(--sky-light), var(--pink-light));
+        }
+        .cal-header .month-label {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--text);
+        }
+        .cal-nav {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--gray-600);
+            padding: 4px 12px;
+            border-radius: 6px;
+            transition: background 0.15s;
+        }
+        .cal-nav:hover { background: var(--sky-light); }
+
+        /* 요일 행 */
+        .cal-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            padding: 12px 16px 4px;
+            gap: 4px;
+        }
+        .cal-weekdays span {
+            text-align: center;
+            font-size: 12px;
+            color: var(--gray-400);
+            font-weight: 500;
+        }
+        .cal-weekdays span:first-child { color: #e74c3c; } /* 일 */
+        .cal-weekdays span:last-child  { color: var(--sky); } /* 토 */
+
+        /* 날짜 그리드 */
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            padding: 4px 16px 24px;
+            gap: 4px;
+        }
+        .cal-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.15s, transform 0.1s;
+            position: relative;
+        }
+        .cal-day:hover:not(.empty) {
+            background: var(--sky-light);
+            transform: scale(1.08);
+        }
+        .cal-day.empty { cursor: default; }
+
+        /* 오늘 날짜: 하늘색 (일기 있어도 우선) */
+        .cal-day.today {
+            background: var(--sky);
+            color: white;
+            font-weight: 500;
+        }
+        /* 일기 있는 날짜: 녹색 */
+        .cal-day.has-diary:not(.today) {
+            background: var(--green);
+            color: white;
+        }
+        /* 일기 있는 날짜 hover */
+        .cal-day.has-diary:not(.today):hover {
+            background: #70D870;
+        }
+
+        /* 범례 */
+        .legend {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            padding: 0 0 20px;
+            font-size: 12px;
+            color: var(--gray-600);
+        }
+        .legend span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div></div>
+    <div class="logo" id="headerTitle">My Diary</div>
+    <button class="logout-btn" id="logoutBtn">로그아웃</button>
+</header>
+
+<div class="page">
+    <div class="calendar-card">
+        <!-- 연/월 네비게이션 -->
+        <div class="cal-header">
+            <button class="cal-nav" id="prevMonth">‹</button>
+            <span class="month-label" id="monthLabel"></span>
+            <button class="cal-nav" id="nextMonth">›</button>
+        </div>
+
+        <!-- 요일 헤더 -->
+        <div class="cal-weekdays">
+            <span>일</span><span>월</span><span>화</span>
+            <span>수</span><span>목</span><span>금</span><span>토</span>
+        </div>
+
+        <!-- 날짜 셀 -->
+        <div class="cal-grid" id="calGrid"></div>
+
+        <!-- 범례 -->
+        <div class="legend">
+            <span><div class="dot" style="background:var(--sky)"></div> 오늘</span>
+            <span><div class="dot" style="background:var(--green)"></div> 일기 있음</span>
+        </div>
+    </div>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/main.js"></script>
+</body>
+</html>

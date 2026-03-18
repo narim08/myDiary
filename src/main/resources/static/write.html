@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Diary</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        /* 헤더 버튼 그룹 */
+        .header-actions { display: flex; gap: 8px; }
+
+        /* 메모 앱 느낌: 넓은 입력 영역 */
+        .write-area {
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            padding: 28px;
+            min-height: calc(100vh - 160px);
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        /* 제목: 선만 있는 입력 */
+        .title-input {
+            font-size: 20px;
+            font-weight: 500;
+            border: none;
+            border-bottom: 1.5px solid var(--gray-200);
+            padding: 0 0 16px;
+            width: 100%;
+            outline: none;
+            font-family: inherit;
+            color: var(--text);
+            background: transparent;
+        }
+        .title-input::placeholder { color: var(--gray-400); font-weight: 300; }
+        .title-input:focus { border-bottom-color: var(--sky); }
+
+        /* 날짜 표시 */
+        .write-date {
+            font-size: 12px;
+            color: var(--gray-400);
+            padding: 12px 0 16px;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        /* 내용: 선 없이 자유롭게 */
+        .content-input {
+            flex: 1;
+            font-size: 15px;
+            line-height: 1.8;
+            border: none;
+            outline: none;
+            resize: none;
+            font-family: inherit;
+            color: var(--text);
+            background: transparent;
+            padding: 20px 0;
+            min-height: 400px;
+        }
+        .content-input::placeholder { color: var(--gray-400); }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <button class="btn btn-ghost" id="cancelBtn">취소</button>
+    <div class="logo">My Diary</div>
+    <button class="btn btn-primary" id="saveBtn">저장</button>
+</header>
+
+<div class="page">
+    <div class="write-area">
+        <input class="title-input" type="text" id="titleInput" placeholder="제목">
+        <div class="write-date" id="writeDateLabel"></div>
+        <textarea class="content-input" id="contentInput" placeholder="오늘 하루를 기록해보세요..."></textarea>
+    </div>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/write.js"></script>
+</body>
+</html>

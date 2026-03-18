@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Diary</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .back-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--gray-600);
+            padding: 4px 8px;
+        }
+
+        /* 상세 카드 */
+        .detail-card {
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            padding: 32px 28px;
+            min-height: calc(100vh - 160px);
+        }
+
+        .detail-title {
+            font-size: 22px;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        /* 메타 정보 (작성시간, 수정시간) */
+        .detail-meta {
+            display: flex;
+            gap: 16px;
+            font-size: 12px;
+            color: var(--gray-400);
+            padding: 12px 0;
+            border-top: 1px solid var(--gray-200);
+            border-bottom: 1px solid var(--gray-200);
+            margin-bottom: 24px;
+        }
+
+        .detail-content {
+            font-size: 15px;
+            line-height: 1.9;
+            color: var(--text);
+            white-space: pre-wrap; /* 줄바꿈 유지 */
+            word-break: break-word;
+        }
+
+        /* 하단 버튼 영역 */
+        .detail-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 32px;
+            padding-top: 20px;
+            border-top: 1px solid var(--gray-200);
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <button class="back-btn" id="backBtn">‹</button>
+    <div class="logo">My Diary</div>
+    <div style="width:40px"></div>
+</header>
+
+<div class="page">
+    <div class="detail-card">
+        <div class="detail-title"  id="detailTitle"></div>
+        <div class="detail-meta">
+            <span id="detailCreated"></span>
+            <span id="detailUpdated"></span>
+        </div>
+        <div class="detail-content" id="detailContent"></div>
+
+        <div class="detail-footer">
+            <button class="btn btn-ghost"   id="deleteBtn">삭제</button>
+            <button class="btn btn-primary" id="editBtn">수정</button>
+        </div>
+    </div>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/detail.js"></script>
+</body>
+</html>
