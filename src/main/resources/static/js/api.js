@@ -7,7 +7,7 @@
  * - JWT 토큰은 localStorage에 저장 후 헤더에 자동 첨부
  */
 
-const BASE_URL = 'http://localhost:8080'; // 백엔드와 같은 서버면 빈 문자열, 분리 시 'http://localhost:8080'
+const BASE_URL = ''; // 백엔드와 같은 서버면 빈 문자열, 분리 시 'http://localhost:8080'
 
 /** localStorage 토큰/유저 관리 */
 const Auth = {
