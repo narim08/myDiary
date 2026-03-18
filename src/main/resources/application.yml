@@ -2,11 +2,8 @@ server:
   port: 8080
 
 spring:
-  datasource:
-    url: jdbc:mariadb://localhost:3306/mydiary
-    username: mydiary_user
-    password: 1234
-    driver-class-name: org.mariadb.jdbc.Driver
+  profiles:
+    active: local
 
   jpa:
     hibernate:
@@ -22,8 +19,3 @@ spring:
       serialization:
         write-dates-as-timestamps: false
       time-zone: Asia/Seoul
-
-jwt:
-  secret: "myDiarySecretKeyForJwtTokenGeneration1234567890!!" #256bit ?? ??
-  expiration: 86400000 #24?? (ms ??)
-
